@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "112889401086",
+    "firebase_url": "https://mixtaprint-bdece.firebaseio.com",
+    "project_id": "mixtaprint-bdece",
+    "storage_bucket": "mixtaprint-bdece.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:112889401086:android:afe663e7ea80a75f",
+        "android_client_info": {
+          "package_name": "com.moccha.mixtaprint_mobile_client"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "112889401086-2ut6oft7j8mdp0iirbl99l12b39if2rm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDp2BUTKiHp4Xrds04-yScQa9ix6uLxRrw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "112889401086-2ut6oft7j8mdp0iirbl99l12b39if2rm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
