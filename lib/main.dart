@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'resources/app.dart';
 import 'package:mixtaprint_mobile_client/ui/splashscreen_page.dart';
 
-void main() async
+void main()
 {
   instantiateFirebaseApp();
   runApp(RootApp());

@@ -10,8 +10,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
 
-  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _formKey = GlobalKey<FormState>();
 
   String _email = "", _password = "";
 
@@ -25,30 +25,23 @@ class _LoginPageState extends State<LoginPage> {
     if (_formKey.currentState.validate()){
       _formKey.currentState.save();
 
-      String snackBarMsg; // message for snackbar
-      bool success = false; // is login success
-
       // authentication using firebase here
-      await Auth.login(_email, _password).then((callback) {
-        _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(callback['msg'])));
-        if (callback['status']) toHomePage();
-        print(callback['msg']);
-        print(callback['status']);
+      await Auth.login(_email, _password).then((ret) {
+        _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(ret['msg'])));
+        if (ret['status']) toHomePage();
+        else _formKey.currentState.reset();
       });
-
-
     }
   }
 
   void toHomePage()
   {
-    // TODO: code for go to homepage
-    print('done!!!');
+//    Navigator.push(context, MaterialPageRoute(builder: (context) => ));
   }
 
   void toSignUpPage()
   {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpPage()));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SignUpPage()));
   }
 
   @override

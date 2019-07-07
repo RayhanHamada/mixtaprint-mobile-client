@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'login_page.dart';
-
+import 'package:mixtaprint_mobile_client/resources/auth.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -9,25 +9,40 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _formKey = GlobalKey<FormState>();
 
-  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  GlobalKey<FormFieldState> _formKey = GlobalKey<FormFieldState>();
+  final _tffPassKey = GlobalKey<FormFieldState<String>>();
+  final _tffPassValKey = GlobalKey<FormFieldState<String>>();
+  final _tffEmailKey = GlobalKey<FormFieldState<String>>();
 
-  GlobalKey<FormFieldState<String>> _tffPassword = GlobalKey<FormFieldState<String>>();
-  GlobalKey<FormFieldState<String>> _tffPassValidate = GlobalKey<FormFieldState<String>>();
+  String _email, _password, _inAppUsername;
 
-  String _email, _password, _passwordValidate;
-
-  void doSignUp()
-  {
-    if (_formKey.currentState.validate()){
+  void doSignUp() async {
+    if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
+
+      await Auth.signUp(_inAppUsername, _email, _password)
+          .then((ret) async {
+            _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(ret['msg'])));
+            if (ret['clr_email_field']) {
+              _tffEmailKey.currentState.reset();
+            }
+            if (ret['clr_pass_field']){
+              _tffPassKey.currentState.reset();
+              _tffPassValKey.currentState.reset();
+            }
+            await Future.delayed(Duration(seconds: 2));
+            if (ret['status']) {
+              _formKey.currentState.reset();
+              toLoginPage();
+            }
+        });
     }
   }
 
-  void toLoginPage()
-  {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+  void toLoginPage() {
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
   }
 
   @override
@@ -39,9 +54,7 @@ class _SignUpPageState extends State<SignUpPage> {
             gradient: LinearGradient(
                 colors: [Colors.lightBlue[100], Colors.lightBlue[700]],
                 begin: Alignment.topCenter,
-                end: Alignment.bottomCenter
-            )
-        ),
+                end: Alignment.bottomCenter)),
         child: Center(
           child: Form(
             key: _formKey,
@@ -61,6 +74,28 @@ class _SignUpPageState extends State<SignUpPage> {
                   child: TextFormField(
                     onSaved: (input) {
                       setState(() {
+                        _inAppUsername = input;
+                      });
+                    },
+                    validator: (text) {
+                      if (text.isEmpty) return "Username cannot be empty";
+                    },
+                    decoration: InputDecoration(
+                      fillColor: Colors.white,
+                      icon: Icon(
+                        Icons.people_outline,
+                        color: Colors.white,
+                      ),
+                      hintText: 'Please Enter Your Username',
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 300,
+                  child: TextFormField(
+                    key: _tffEmailKey,
+                    onSaved: (input) {
+                      setState(() {
                         _email = input;
                       });
                     },
@@ -68,18 +103,19 @@ class _SignUpPageState extends State<SignUpPage> {
                       if (text.isEmpty) return "Email field cannot be empty";
                     },
                     decoration: InputDecoration(
-                        fillColor: Colors.white,
-                        icon: Icon(
-                          Icons.mail_outline,
-                          color: Colors.white,
-                        ),
-                        hintText: 'Please Enter Your Email'),
+                      fillColor: Colors.white,
+                      icon: Icon(
+                        Icons.mail_outline,
+                        color: Colors.white,
+                      ),
+                      hintText: 'Please Enter Your Email',
+                    ),
                   ),
                 ),
                 SizedBox(
                   width: 300,
                   child: TextFormField(
-                    key: _tffPassword,
+                    key: _tffPassKey,
                     onSaved: (input) {
                       setState(() {
                         _password = input;
@@ -87,37 +123,40 @@ class _SignUpPageState extends State<SignUpPage> {
                     },
                     validator: (text) {
                       if (text.isEmpty) return "Password field cannot be empty";
+                      else if (text.length < 8) return "Password must at least 8 character long";
                     },
                     decoration: InputDecoration(
-                        fillColor: Colors.white,
-                        icon: Icon(
-                          Icons.lock_outline,
-                          color: Colors.white,
-                        ),
-                        hintText: 'Please Enter Your Password'),
+                      fillColor: Colors.white,
+                      icon: Icon(
+                        Icons.lock_outline,
+                        color: Colors.white,
+                      ),
+                      hintText: 'Please Enter Your Password',
+                    ),
                     obscureText: true,
                   ),
                 ),
                 SizedBox(
                   width: 300,
                   child: TextFormField(
-                    key: _tffPassValidate,
+                    key: _tffPassValKey,
                     onSaved: (input) {
-                      setState(() {
-                        _passwordValidate = input;
-                      });
+
                     },
                     validator: (text) {
-                      if (text.isEmpty) return "Validator Password field cannot be empty";
-                      if (text != _tffPassword.currentState.value) return "Repeated password is not same";
+                      if (text.isEmpty)
+                        return "Validator Password field cannot be empty";
+                      if (text != _tffPassKey.currentState.value)
+                        return "Repeated password is not same";
                     },
                     decoration: InputDecoration(
-                        fillColor: Colors.white,
-                        icon: Icon(
-                          Icons.lock_outline,
-                          color: Colors.white,
-                        ),
-                        hintText: 'Please Enter Your Password Again'),
+                      fillColor: Colors.white,
+                      icon: Icon(
+                        Icons.lock_outline,
+                        color: Colors.white,
+                      ),
+                      hintText: 'Please Enter Your Password Again',
+                    ),
                     obscureText: true,
                   ),
                 ),
@@ -141,9 +180,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     child: Text(
                       'Already have an account ?',
                     ),
-                    borderSide: BorderSide(
-                        color: Colors.black
-                    ),
+                    borderSide: BorderSide(color: Colors.black),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),

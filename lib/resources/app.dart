@@ -1,5 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
-
+// this module is optional, since we already specify the Firebase Options in the google-services.json
 
 // create options for instantiate a firebase app
 FirebaseOptions _options = FirebaseOptions(
@@ -10,7 +10,7 @@ FirebaseOptions _options = FirebaseOptions(
 
 );
 
-FirebaseApp app;
+FirebaseApp app  = FirebaseApp.instance;
 
 Future<void> instantiateFirebaseApp() async
 {

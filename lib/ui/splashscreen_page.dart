@@ -13,7 +13,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void delay() async
   {
     Future.delayed(Duration(seconds: 3), () {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginPage()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
     });
   }
 
@@ -31,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-              colors: [Colors.white, Colors.blueGrey[800]],
+              colors: [Colors.white, Colors.blue[300]],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
           )
