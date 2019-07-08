@@ -22,27 +22,28 @@ class _SignUpPageState extends State<SignUpPage> {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
 
-      await Auth.signUp(_inAppUsername, _email, _password)
-          .then((ret) async {
-            _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(ret['msg'])));
-            if (ret['clr_email_field']) {
-              _tffEmailKey.currentState.reset();
-            }
-            if (ret['clr_pass_field']){
-              _tffPassKey.currentState.reset();
-              _tffPassValKey.currentState.reset();
-            }
-            await Future.delayed(Duration(seconds: 2));
-            if (ret['status']) {
-              _formKey.currentState.reset();
-              toLoginPage();
-            }
-        });
+      await Auth.signUp(_inAppUsername, _email, _password).then((ret) async {
+        _scaffoldKey.currentState
+            .showSnackBar(SnackBar(content: Text(ret['msg'])));
+        if (ret['clr_email_field']) {
+          _tffEmailKey.currentState.reset();
+        }
+        if (ret['clr_pass_field']) {
+          _tffPassKey.currentState.reset();
+          _tffPassValKey.currentState.reset();
+        }
+        await Future.delayed(Duration(seconds: 2));
+        if (ret['status']) {
+          _formKey.currentState.reset();
+          toLoginPage();
+        }
+      });
     }
   }
 
   void toLoginPage() {
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => LoginPage()));
   }
 
   @override
@@ -122,8 +123,10 @@ class _SignUpPageState extends State<SignUpPage> {
                       });
                     },
                     validator: (text) {
-                      if (text.isEmpty) return "Password field cannot be empty";
-                      else if (text.length < 8) return "Password must at least 8 character long";
+                      if (text.isEmpty)
+                        return "Password field cannot be empty";
+                      else if (text.length < 8)
+                        return "Password must at least 8 character long";
                     },
                     decoration: InputDecoration(
                       fillColor: Colors.white,
@@ -140,9 +143,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   width: 300,
                   child: TextFormField(
                     key: _tffPassValKey,
-                    onSaved: (input) {
-
-                    },
+                    onSaved: (input) {},
                     validator: (text) {
                       if (text.isEmpty)
                         return "Validator Password field cannot be empty";

@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:mixtaprint_mobile_client/resources/auth.dart';
 import 'resources/app.dart';
 import 'package:mixtaprint_mobile_client/ui/splashscreen_page.dart';
 
-void main()
+import 'ui/home_page.dart';
+
+bool _authUserExist;
+void main() async
 {
-  instantiateFirebaseApp();
+  await instantiateFirebaseApp();
+  _authUserExist = ((await Auth.auth.currentUser()) == null);
   runApp(RootApp());
 }
 
@@ -13,7 +18,7 @@ class RootApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: SplashScreen(),
+      home: _authUserExist ? HomePage() : SplashScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

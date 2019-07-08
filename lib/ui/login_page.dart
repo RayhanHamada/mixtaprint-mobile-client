@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mixtaprint_mobile_client/resources/auth.dart';
 import 'package:mixtaprint_mobile_client/ui/signup_page.dart';
 
+import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -9,7 +10,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
 
@@ -20,28 +20,31 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
   }
 
-  void doLogin() async
-  {
-    if (_formKey.currentState.validate()){
+  void doLogin() async {
+    if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
 
       // authentication using firebase here
-      await Auth.login(_email, _password).then((ret) {
-        _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(ret['msg'])));
-        if (ret['status']) toHomePage();
-        else _formKey.currentState.reset();
+      await Auth.login(_email, _password).then((ret) async {
+        _scaffoldKey.currentState
+            .showSnackBar(SnackBar(content: Text(ret['msg'])));
+        await Future.delayed(Duration(seconds: 2));
+        if (ret['status'])
+          toHomePage();
+        else
+          _formKey.currentState.reset();
       });
     }
   }
 
-  void toHomePage()
-  {
-//    Navigator.push(context, MaterialPageRoute(builder: (context) => ));
+  void toHomePage() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => HomePage()));
   }
 
-  void toSignUpPage()
-  {
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SignUpPage()));
+  void toSignUpPage() {
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => SignUpPage()));
   }
 
   @override
@@ -51,12 +54,10 @@ class _LoginPageState extends State<LoginPage> {
       key: _scaffoldKey,
       body: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.lightBlue[100], Colors.lightBlue[700]],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter
-          )
-        ),
+            gradient: LinearGradient(
+                colors: [Colors.lightBlue[100], Colors.lightBlue[700]],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter)),
         child: Center(
           child: Form(
             key: _formKey,
@@ -132,9 +133,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: Text(
                       'Don\'t have any account ?',
                     ),
-                    borderSide: BorderSide(
-                      color: Colors.black
-                    ),
+                    borderSide: BorderSide(color: Colors.black),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
