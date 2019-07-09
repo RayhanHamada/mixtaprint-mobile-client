@@ -1,9 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:mixtaprint_mobile_client/resources/app.dart';
 import 'package:mixtaprint_mobile_client/resources/cloud_functions.dart';
 
 class Auth {
-  static final auth = FirebaseAuth.fromApp(app);
+  static final auth = FirebaseAuth.instance;
 
   static Future<Map> login(String email, String password) async {
     bool catchError = false;

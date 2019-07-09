@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mixtaprint_mobile_client/resources/auth.dart';
-import 'resources/app.dart';
 import 'package:mixtaprint_mobile_client/ui/splashscreen_page.dart';
 
 import 'ui/home_page.dart';
@@ -8,7 +7,6 @@ import 'ui/home_page.dart';
 bool _authUserExist;
 void main() async
 {
-  await instantiateFirebaseApp();
   _authUserExist = ((await Auth.auth.currentUser()) == null);
   runApp(RootApp());
 }

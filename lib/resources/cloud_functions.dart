@@ -1,14 +1,14 @@
 import 'package:cloud_functions/cloud_functions.dart';
 
-final fun = CloudFunctions.instance;
-
 class HttpFunctions {
+
+  static final fun = CloudFunctions.instance;
   // create storage and firestore document for new user
   static Future<bool> prepUserStorageAndDB(
       String uid, String inAppUsername) async {
     bool success = false;
     // preparing function call
-    final HttpsCallable prep = fun.getHttpsCallable(
+    final HttpsCallable prep = HttpFunctions.fun.getHttpsCallable(
         functionName: 'prepUserStorageAndDB')
       ..timeout = Duration(seconds: 30);
     // call function
