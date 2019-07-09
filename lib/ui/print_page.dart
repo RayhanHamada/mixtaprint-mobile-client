@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mixtaprint_mobile_client/resources/auth.dart';
 import 'package:mixtaprint_mobile_client/resources/current_user.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:mixtaprint_mobile_client/resources/db_firestore.dart';
 
 import 'home_page.dart';
 import 'login_page.dart';
@@ -72,6 +73,30 @@ class _PrintPageState extends State<PrintPage> {
     setState(() {
       Navigator.popAndPushNamed(context, HomePage.routeName);
     });
+  }
+
+  Future<void> _getInAppUsername() async {
+    await Auth.auth.currentUser().then((user) async {
+      await FirestoreDB.dbFirestore
+          .collection('users_client')
+          .document('${user.uid}')
+          .get()
+          .then((snapshot) {
+        setState(() {
+          _text = Text(
+            snapshot.data['inAppUsername'],
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          );
+        });
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _getInAppUsername();
   }
 
 
@@ -155,6 +180,6 @@ class _PrintPageState extends State<PrintPage> {
           ),
         ),
       ),
-    );;
+    );
   }
 }
