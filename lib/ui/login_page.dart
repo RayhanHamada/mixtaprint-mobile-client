@@ -84,12 +84,13 @@ class _LoginPageState extends State<LoginPage> {
                       if (text.isEmpty) return "Email field cannot be empty";
                     },
                     decoration: InputDecoration(
-                        fillColor: Colors.white,
-                        icon: Icon(
-                          Icons.mail_outline,
-                          color: Colors.white,
-                        ),
-                        hintText: 'Please Enter Your Email'),
+                      fillColor: Colors.white,
+                      icon: Icon(
+                        Icons.mail_outline,
+                        color: Colors.white,
+                      ),
+                      hintText: 'Email',
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -104,12 +105,13 @@ class _LoginPageState extends State<LoginPage> {
                       if (text.isEmpty) return "Password field cannot be empty";
                     },
                     decoration: InputDecoration(
-                        fillColor: Colors.white,
-                        icon: Icon(
-                          Icons.lock_outline,
-                          color: Colors.white,
-                        ),
-                        hintText: 'Please Enter Your Password'),
+                      fillColor: Colors.white,
+                      icon: Icon(
+                        Icons.lock_outline,
+                        color: Colors.white,
+                      ),
+                      hintText: 'Password',
+                    ),
                     obscureText: true,
                   ),
                 ),
@@ -133,7 +135,9 @@ class _LoginPageState extends State<LoginPage> {
                     child: Text(
                       'Don\'t have any account ?',
                     ),
-                    borderSide: BorderSide(color: Colors.black),
+                    borderSide: BorderSide(
+                      color: Colors.black,
+                    ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
