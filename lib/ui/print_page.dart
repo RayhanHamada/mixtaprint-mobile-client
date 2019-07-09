@@ -1,24 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:mixtaprint_mobile_client/resources/auth.dart';
 import 'package:mixtaprint_mobile_client/resources/current_user.dart';
-import 'package:mixtaprint_mobile_client/resources/db_firestore.dart';
-import 'package:mixtaprint_mobile_client/ui/print_page.dart';
+import 'package:file_picker/file_picker.dart';
 
+import 'home_page.dart';
 import 'login_page.dart';
 
-// TODO : tidy up HomePage code
-class HomePage extends StatefulWidget {
-  static final routeName = '/HomePage';
+// TODO : tidy up PrintPage code
+class PrintPage extends StatefulWidget {
+
+  static final routeName = '/PrintPage';
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _PrintPageState createState() => _PrintPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _PrintPageState extends State<PrintPage> {
+
   var _text = Text(
     CurrentUser.inAppUsername,
     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
   );
+
 
   Future<bool> _onBackPressed() async {
     return showDialog(
@@ -28,7 +31,7 @@ class _HomePageState extends State<HomePage> {
             title: Text('Logout and exit to login page'),
             content: Text('Are you sure ?'),
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             actions: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -64,34 +67,10 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  Future<void> _getInAppUsername() async {
-    await Auth.auth.currentUser().then((user) async {
-      await FirestoreDB.dbFirestore
-          .collection('users_client')
-          .document('${user.uid}')
-          .get()
-          .then((snapshot) {
-        setState(() {
-          _text = Text(
-            snapshot.data['inAppUsername'],
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          );
-        });
-      });
-    });
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _getInAppUsername();
-  }
-
-  void toPrintPage()
+  void toHomePage()
   {
     setState(() {
-      Navigator.popAndPushNamed(context, PrintPage.routeName);
+      Navigator.popAndPushNamed(context, HomePage.routeName);
     });
   }
 
@@ -106,60 +85,60 @@ class _HomePageState extends State<HomePage> {
             children: <Widget>[
               DrawerHeader(
                 child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Column(
-                        children: <Widget>[
-                          CircleAvatar(
-                            child: Icon(
-                              Icons.person,
-                              color: Colors.black,
-                              size: 50,
-                            ),
-                            radius: 40,
-                          ),
-                          Padding(
-                              padding: const EdgeInsets.only(top: 0),
-                              child: _text
-                          ),
-                          Chip(
-                            label: Text(
-                              'Premium',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold
+                    alignment: Alignment.centerRight,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Column(
+                          children: <Widget>[
+                            CircleAvatar(
+                              child: Icon(
+                                Icons.person,
+                                color: Colors.black,
+                                size: 50,
                               ),
+                              radius: 40,
                             ),
-                            backgroundColor: Colors.orange,
-                          )
-                        ],
-                      ),
-                    ],
-                  )
+                            Padding(
+                                padding: const EdgeInsets.only(top: 0),
+                                child: _text
+                            ),
+                            Chip(
+                              label: Text(
+                                'Premium',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold
+                                ),
+                              ),
+                              backgroundColor: Colors.orange,
+                            )
+                          ],
+                        ),
+                      ],
+                    )
                 ),
                 padding: const EdgeInsets.only(right: 20),
               ),
               ListTile(
                 leading: Icon(
                   Icons.home,
-                  color: Colors.blue,
+                  color: Colors.black,
                 ),
                 title: Text(
-                  'Home'
+                    'Home'
                 ),
-                onTap: () {},
+                onTap: toHomePage,
               ),
               ListTile(
                 leading: Icon(
                   Icons.print,
-                  color: Colors.black,
+                  color: Colors.blue,
                 ),
                 title: Text(
                     'Start Print'
                 ),
-                onTap: toPrintPage,
+                onTap: (){},
               ),
             ],
           ),
@@ -170,12 +149,12 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                'HomePage',
+                'Print Page',
               ),
             ],
           ),
         ),
       ),
-    );
+    );;
   }
 }
