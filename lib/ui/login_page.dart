@@ -5,6 +5,9 @@ import 'package:mixtaprint_mobile_client/ui/signup_page.dart';
 import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
+
+  static final routeName = '/LoginPage';
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -38,13 +41,15 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void toHomePage() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => HomePage()));
+    setState(() {
+      Navigator.pushNamed(context, HomePage.routeName);
+    });
   }
 
   void toSignUpPage() {
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => SignUpPage()));
+    setState(() {
+      Navigator.pushNamed(context, SignUpPage.routeName);
+    });
   }
 
   @override

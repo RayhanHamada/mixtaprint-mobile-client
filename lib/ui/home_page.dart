@@ -4,6 +4,9 @@ import 'package:mixtaprint_mobile_client/resources/auth.dart';
 import 'login_page.dart';
 
 class HomePage extends StatefulWidget {
+
+  static final routeName = '/HomePage';
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -48,8 +51,9 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _toLoginPageAndLogout() async {
     await Auth.logout();
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => LoginPage()));
+    setState(() {
+      Navigator.popAndPushNamed(context, LoginPage.routeName);
+    });
   }
 
   @override

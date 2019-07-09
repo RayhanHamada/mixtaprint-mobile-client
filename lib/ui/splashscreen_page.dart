@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'login_page.dart';
 
 class SplashScreen extends StatefulWidget {
+  static final routeName = '/SplashScreen';
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -10,8 +12,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   void delay() async {
     Future.delayed(Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => LoginPage()));
+      Navigator.pushReplacementNamed(context, LoginPage.routeName);
     });
   }
 
