@@ -20,6 +20,8 @@ class _HomePageState extends State<HomePage> {
     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
   );
 
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   Future<bool> _onBackPressed() async {
     return showDialog(
         context: context,
@@ -101,6 +103,7 @@ class _HomePageState extends State<HomePage> {
     return WillPopScope(
       onWillPop: _onBackPressed,
       child: Scaffold(
+        key: _scaffoldKey,
         drawer: Drawer(
           child: ListView(
             children: <Widget>[

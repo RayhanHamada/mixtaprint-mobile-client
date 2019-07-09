@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:mixtaprint_mobile_client/resources/auth.dart';
 import 'package:mixtaprint_mobile_client/resources/current_user.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:mixtaprint_mobile_client/resources/db_firestore.dart';
+import 'package:mixtaprint_mobile_client/resources/storage.dart';
 
 import 'home_page.dart';
 import 'login_page.dart';
@@ -23,6 +26,16 @@ class _PrintPageState extends State<PrintPage> {
     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
   );
 
+  static var _fileName = '';
+
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  var _pathWidget = Text(
+    _fileName,
+    style: TextStyle(
+        fontSize: 18
+    ),
+  );
 
   Future<bool> _onBackPressed() async {
     return showDialog(
@@ -92,6 +105,23 @@ class _PrintPageState extends State<PrintPage> {
     });
   }
 
+  void _openFileExplorer() async
+  {
+    await FilePicker.getFile(type: FileType.CUSTOM, fileExtension: 'docx')
+        .then((file) {
+      setState(() {
+        _fileName = file.path ?? '';
+
+      });
+    });
+  }
+
+  void _print() async
+  {
+    if (_fileName != null || _fileName != '') await Storage.uploadToStorage(File(_fileName));
+  }
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -105,6 +135,7 @@ class _PrintPageState extends State<PrintPage> {
     return WillPopScope(
       onWillPop: _onBackPressed,
       child: Scaffold(
+        key: _scaffoldKey,
         drawer: Drawer(
           child: ListView(
             children: <Widget>[
@@ -173,8 +204,20 @@ class _PrintPageState extends State<PrintPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(
-                'Print Page',
+              RaisedButton(
+                onPressed: _openFileExplorer,
+                child: Text(
+                  'Open File Explorer'
+                ),
+                color: Colors.yellow,
+              ),
+              _pathWidget,
+              RaisedButton(
+                onPressed: _print,
+                child: Text(
+                    'Print !'
+                ),
+                color: Colors.orange,
               ),
             ],
           ),
